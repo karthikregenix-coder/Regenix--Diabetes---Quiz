@@ -86,7 +86,6 @@ if(!req("mobile","Enter Mobile Number")) return;
 if(!req("email","Enter Email ID")) return;
 if(!req("hospital","Enter Hospital / Clinic")) return;
 if(!req("city","Enter City / Practice Location")) return;
-if(!quiz){alert("Select Your Specialty");return;}
 if(!document.getElementById("agree").checked){alert("Please confirm the declaration.");return;}
 localStorage.setItem("doctorName", document.getElementById("name").value);
 localStorage.setItem("doctorMobile", document.getElementById("mobile").value);
