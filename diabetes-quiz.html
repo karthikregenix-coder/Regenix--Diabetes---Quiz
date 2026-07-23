@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Diabetes Management Quiz — Diabetology Conference</title>
+<style>
+  :root{
+    --brand:#0e7c66; --brand-dark:#0a5c4c; --brand-light:#d5efe8;
+    --bg1:#0e7c66; --bg2:#12a382;
+    --correct:#1a9e5f; --correct-bg:#e3f7ec;
+    --wrong:#d64545; --wrong-bg:#fdeaea;
+    --ink:#12352d; --muted:#5b7a72;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--ink); min-height:100%; display:flex; align-items:center; justify-content:center;
+    padding:16px;
+  }
+  .app{
+    width:100%; max-width:640px; background:#fff; border-radius:26px;
+    box-shadow:0 24px 60px rgba(0,0,0,.28); overflow:hidden; display:flex; flex-direction:column;
+  }
+  header{
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    color:#fff; padding:22px 26px;
+  }
+  .kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;font-weight:700;}
+  header h1{margin:6px 0 0;font-size:22px;line-height:1.25;}
+  .bar{height:6px;background:rgba(255,255,255,.25);}
+  .bar > span{display:block;height:100%;width:0;background:#fff;transition:width .4s ease;}
+  .stage{padding:26px;min-height:420px;display:flex;flex-direction:column;justify-content:center;}
+
+  /* Start screen */
+  .start p{font-size:16px;line-height:1.6;color:var(--muted);margin:0 0 22px;}
+  .start .meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px;}
+  .chip{background:var(--brand-light);color:var(--brand-dark);font-weight:700;font-size:14px;
+    padding:9px 15px;border-radius:999px;}
+  .btn{
+    appearance:none;border:0;cursor:pointer;font-weight:800;font-size:18px;
+    padding:18px 22px;border-radius:16px;background:var(--brand);color:#fff;width:100%;
+    transition:transform .08s ease,filter .15s ease;
+  }
+  .btn:active{transform:scale(.98);filter:brightness(1.05);}
+  .btn.secondary{background:#eef3f1;color:var(--brand-dark);}
+
+  .qcat{display:inline-block;background:var(--brand-light);color:var(--brand-dark);
+    font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:5px 11px;border-radius:999px;margin-bottom:10px;}
+  .qcount{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;}
+  .qtext{font-size:21px;font-weight:800;line-height:1.4;margin:0 0 20px;}
+  .options{display:flex;flex-direction:column;gap:12px;}
+  .opt{
+    text-align:left;border:2px solid #e3ece9;background:#fff;border-radius:16px;
+    padding:17px 18px;font-size:17px;font-weight:600;color:var(--ink);cursor:pointer;
+    display:flex;align-items:center;gap:13px;transition:border-color .15s,background .15s,transform .08s;
+  }
+  .opt:active{transform:scale(.99);}
+  .opt .let{
+    flex:0 0 32px;height:32px;border-radius:9px;background:var(--brand-light);color:var(--brand-dark);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
+  }
+  .opt.correct{border-color:var(--correct);background:var(--correct-bg);}
+  .opt.correct .let{background:var(--correct);color:#fff;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-bg);}
+  .opt.wrong .let{background:var(--wrong);color:#fff;}
+  .opt.disabled{pointer-events:none;opacity:.75;}
+  .opt.correct.disabled,.opt.wrong.disabled{opacity:1;}
+
+  .explain{
+    margin-top:18px;border-radius:16px;padding:16px 18px;font-size:15.5px;line-height:1.55;
+    background:#f4f8f7;border-left:5px solid var(--brand);display:none;
+  }
+  .explain.show{display:block;animation:fade .3s ease;}
+  .explain .verdict{font-weight:800;margin-bottom:5px;display:block;}
+  .explain .verdict.ok{color:var(--correct);}
+  .explain .verdict.no{color:var(--wrong);}
+  .explain .ref{margin-top:9px;font-size:13px;color:var(--muted);font-style:italic;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .foot{margin-top:20px;}
+
+  /* Result */
+  .result{text-align:center;}
+  .score-ring{font-size:52px;font-weight:900;color:var(--brand-dark);margin:6px 0;}
+  .result .sub{font-size:17px;color:var(--muted);margin-bottom:8px;}
+  .verdict-line{font-size:19px;font-weight:800;margin:14px 0 24px;}
+  .hide{display:none!important;}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="kicker">Diabetology Conference</div>
+    <h1>Diabetes Management Challenge</h1>
+  </header>
+  <div class="bar"><span id="bar"></span></div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<script>
+const QUIZ = {
+  intro: "Test your diabetes management knowledge across 10 quick questions spanning endocrinology, cardiology, nephrology, nutrition, and neurology. Tap an answer to see the correct response and a short rationale.",
+  chips: ["10 questions", "Multidisciplinary", "With rationale"],
+  questions: [
+    {
+      cat: "Endocrinology",
+      q: "A patient with type 2 diabetes has an HbA1c of 8.8% despite apparently acceptable fasting glucose values. Which abnormality is most likely contributing significantly to the elevated HbA1c?",
+      options: ["Recurrent nocturnal hypoglycemia", "Reduced renal glucose threshold", "Postprandial hyperglycemia", "Increased insulin clearance"],
+      answer: 2,
+      why: "When fasting glucose is relatively controlled but HbA1c remains elevated, significant postprandial glucose excursions should be considered as an important contributor to overall glycemic exposure.",
+      ref: "ADA Standards of Care in Diabetes—2026"
+    },
+    {
+      cat: "Cardiology",
+      q: "A patient with type 2 diabetes and symptomatic heart failure with reduced ejection fraction is being evaluated for glucose-lowering therapy. Which class has demonstrated heart-failure benefits that extend beyond its glucose-lowering effect?",
+      options: ["DPP-4 inhibitors", "Sulfonylureas", "Thiazolidinediones", "SGLT2 inhibitors"],
+      answer: 3,
+      why: "SGLT2 inhibitors reduce the risk of heart-failure hospitalization and cardiovascular events in appropriate patients, with benefits observed even beyond their glucose-lowering effects.",
+      ref: "ADA Standards of Care 2026 / ACC–AHA Heart Failure Guidelines"
+    },
+    {
+      cat: "Nephro-Diabetology",
+      q: "A patient with type 2 diabetes, eGFR 48 mL/min/1.73 m², and persistent albuminuria is already receiving the maximally tolerated dose of an ACE inhibitor. Potassium is normal. Which additional therapy specifically targets residual cardiorenal risk associated with persistent albuminuria?",
+      options: ["Hydrochlorothiazide", "Amlodipine", "Pioglitazone", "Finerenone"],
+      answer: 3,
+      why: "Finerenone, a nonsteroidal mineralocorticoid receptor antagonist, reduces CKD progression and cardiovascular events in appropriate patients with type 2 diabetes and CKD with albuminuria.",
+      ref: "FIDELIO-DKD / FIGARO-DKD / ADA Standards of Care 2026"
+    },
+    {
+      cat: "Nutrition",
+      q: "A patient using prandial insulin experiences large post-meal glucose excursions despite consuming meals with similar total carbohydrate content. Which dietary characteristic can independently influence the magnitude and timing of the postprandial glucose response?",
+      options: ["Dietary cholesterol alone", "Sodium content alone", "Water intake with meals", "Glycemic index and macronutrient composition of the meal"],
+      answer: 3,
+      why: "Carbohydrate quality, glycemic index, fiber, fat, and protein composition can substantially modify the magnitude and timing of postprandial glucose excursions, even when total carbohydrate amounts are similar.",
+      ref: "ADA Standards of Care 2026 – Facilitating Positive Health Behaviors and Well-being"
+    },
+    {
+      cat: "Neurology",
+      q: "A patient with long-standing diabetes develops severe burning pain in both feet, worse at night, with distal symmetric sensory loss. Which pathophysiological mechanism most accurately characterizes diabetic peripheral neuropathy?",
+      options: ["Isolated autoimmune demyelination", "Acute compression of peripheral nerves", "Selective destruction of motor neurons", "Multifactorial metabolic and microvascular injury causing peripheral nerve dysfunction"],
+      answer: 3,
+      why: "Diabetic peripheral neuropathy results from complex interactions involving chronic hyperglycemia, oxidative stress, metabolic abnormalities, inflammation, and microvascular dysfunction leading to nerve injury.",
+      ref: "ADA Standards of Care 2026 – Neuropathy"
+    },
+    {
+      cat: "Endocrinology",
+      q: "A patient taking an SGLT2 inhibitor presents with nausea, abdominal pain, tachypnea, and malaise. Blood glucose is 178 mg/dL, but metabolic acidosis and elevated ketones are present. What is the most likely diagnosis?",
+      options: ["Hyperosmolar hyperglycemic state", "Lactic acidosis caused solely by hyperglycemia", "Starvation without ketoacidosis", "Euglycemic diabetic ketoacidosis"],
+      answer: 3,
+      why: "SGLT2 inhibitor-associated DKA may occur with only modest elevation of blood glucose. The combination of metabolic acidosis and ketonemia despite glucose <250 mg/dL should raise suspicion for euglycemic DKA.",
+      ref: "ADA Standards of Care 2026 – Diabetes Technology & Pharmacologic Approaches / Hyperglycemic Crises"
+    },
+    {
+      cat: "Cardio-Diabetology",
+      q: "A patient with type 2 diabetes and established ASCVD requires additional glucose-lowering therapy. HbA1c is already near individualized target. Which statement best reflects contemporary cardiovascular risk-management principles?",
+      options: ["Cardioprotective therapy should only be initiated if HbA1c exceeds 9%", "Sulfonylureas are mandatory before cardioprotective agents", "Cardiovascular benefit depends entirely on the magnitude of HbA1c reduction", "An SGLT2 inhibitor and/or GLP-1 receptor agonist with demonstrated cardiovascular benefit may be indicated independent of the need for additional HbA1c lowering"],
+      answer: 3,
+      why: "In patients with established ASCVD or high cardiorenal risk, agents with demonstrated cardiovascular benefit may be recommended as part of comprehensive risk reduction, independent of whether substantial additional glucose lowering is required.",
+      ref: "ADA Standards of Care 2026 – Cardiovascular Disease and Risk Management"
+    },
+    {
+      cat: "General Practice",
+      q: "A patient with diabetes treated with insulin develops recurrent early-morning hyperglycemia. To differentiate nocturnal hypoglycemia followed by rebound hyperglycemia from the dawn phenomenon, which approach is most informative?",
+      options: ["Measure only HbA1c", "Measure urine glucose after breakfast", "Measure only fasting insulin", "Assess overnight glucose patterns using CGM or targeted nocturnal glucose measurements"],
+      answer: 3,
+      why: "Overnight glucose data can reveal whether morning hyperglycemia is preceded by nocturnal hypoglycemia or represents a progressive early-morning glucose rise, allowing therapy to be adjusted appropriately.",
+      ref: "ADA Standards of Care 2026 – Diabetes Technology / Glycemic Management"
+    },
+    {
+      cat: "Neuro-Diabetology",
+      q: "A patient with long-standing diabetes reports dizziness on standing, resting tachycardia, early satiety, and erectile dysfunction. Which diabetic complication best unifies these findings?",
+      options: ["Distal symmetric polyneuropathy alone", "Diabetic amyotrophy", "Mononeuropathy multiplex", "Diabetic autonomic neuropathy"],
+      answer: 3,
+      why: "Diabetic autonomic neuropathy can affect multiple organ systems. Cardiovascular autonomic dysfunction may cause orthostatic symptoms and resting tachycardia, while gastrointestinal and genitourinary autonomic involvement can cause gastroparesis and sexual dysfunction.",
+      ref: "ADA Standards of Care 2026 – Neuropathy"
+    },
+    {
+      cat: "Multidisciplinary",
+      q: "A 58-year-old patient with type 2 diabetes has HbA1c 8.4%, BMI 37 kg/m², prior myocardial infarction, heart failure, eGFR 42 mL/min/1.73 m², and UACR 420 mg/g. The patient is already receiving metformin as tolerated and optimized ACE inhibitor/ARB therapy. Which strategy most comprehensively addresses the patient's residual metabolic and cardiorenal risk?",
+      options: ["Intensify sulfonylurea alone to achieve HbA1c <7%", "Add pioglitazone because of its insulin-sensitizing effect", "Focus exclusively on insulin intensification because HbA1c remains above target", "Prioritize an SGLT2 inhibitor with proven cardiorenal benefit, consider a GLP-1 receptor agonist with demonstrated cardiovascular benefit/weight efficacy, and evaluate eligibility for finerenone with appropriate potassium and renal monitoring"],
+      answer: 3,
+      why: "This patient has multiple overlapping high-risk conditions—ASCVD, heart failure, obesity, and albuminuric CKD. Contemporary diabetes management requires risk-based therapy beyond HbA1c alone. SGLT2 inhibition provides major HF/CKD benefits; an appropriate GLP-1 RA can address ASCVD risk, glycemia, and weight; and finerenone may provide additional cardiorenal protection in eligible patients with persistent albuminuric CKD.",
+      ref: "ADA Standards of Care in Diabetes—2026 / KDIGO Diabetes Management in CKD / FIDELIO-DKD & FIGARO-DKD"
+    }
+  ]
+};
+</script>
+
+<script>
+const stage=document.getElementById('stage');
+const bar=document.getElementById('bar');
+let idx=0, score=0, answered=false;
+
+function setBar(p){bar.style.width=p+'%';}
+
+function renderStart(){
+  setBar(0);
+  const chips=QUIZ.chips.map(c=>`<span class="chip">${c}</span>`).join('');
+  stage.innerHTML=`
+    <div class="start">
+      <p>${QUIZ.intro}</p>
+      <div class="meta">${chips}</div>
+      <button class="btn" id="startBtn">Start the quiz</button>
+    </div>`;
+  document.getElementById('startBtn').onclick=()=>{idx=0;score=0;renderQ();};
+}
+
+function renderQ(){
+  answered=false;
+  const item=QUIZ.questions[idx];
+  setBar(Math.round((idx)/QUIZ.questions.length*100));
+  const opts=item.options.map((o,i)=>`
+    <button class="opt" data-i="${i}">
+      <span class="let">${String.fromCharCode(65+i)}</span><span>${o}</span>
+    </button>`).join('');
+  stage.innerHTML=`
+    <div class="qwrap">
+      <div class="qcat">${item.cat}</div>
+      <div class="qcount">Question ${idx+1} of ${QUIZ.questions.length} · Score ${score}</div>
+      <p class="qtext">${item.q}</p>
+      <div class="options">${opts}</div>
+      <div class="explain" id="explain"></div>
+      <div class="foot hide" id="foot">
+        <button class="btn" id="nextBtn">${idx===QUIZ.questions.length-1?'See my result':'Next question'}</button>
+      </div>
+    </div>`;
+  stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(parseInt(b.dataset.i)));
+}
+
+function choose(i){
+  if(answered)return; answered=true;
+  const item=QUIZ.questions[idx];
+  const opts=stage.querySelectorAll('.opt');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const correct=item.answer;
+  opts[correct].classList.add('correct');
+  const ok=i===correct;
+  if(ok){score++;}
+  else{opts[i].classList.add('wrong');}
+  const ex=document.getElementById('explain');
+  ex.innerHTML=`
+    <span class="verdict ${ok?'ok':'no'}">${ok?'✓ Correct':'✗ Not quite'}</span>
+    ${item.why}
+    <div class="ref">Reference: ${item.ref}</div>`;
+  ex.classList.add('show');
+  const foot=document.getElementById('foot');
+  foot.classList.remove('hide');
+  document.getElementById('nextBtn').onclick=()=>{
+    idx++;
+    if(idx<QUIZ.questions.length){renderQ();}else{renderResult();}
+  };
+}
+
+function renderResult(){
+
+  setBar(100);
+
+  const total = QUIZ.questions.length;
+
+  const pct = Math.round(score/total*100);
+
+  fetch("https://script.google.com/macros/s/AKfycbz4fgNR6-9RBnf90x5vobezBVyF8D28QUZ8d3EBT5ffCLvyu0RCD3eigDojxUlVoJJi1w/exec",{
+    method:"POST",
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
+    },
+    body:JSON.stringify({
+      name:localStorage.getItem("doctorName"),
+      mobile:localStorage.getItem("doctorMobile"),
+      email:localStorage.getItem("doctorEmail"),
+      hospital:localStorage.getItem("doctorHospital"),
+      city:localStorage.getItem("doctorCity"),
+      specialty:"Diabetology",
+      score:score
+    })
+  });
+  let line;
+  if(pct===100) line="Outstanding — a perfect score!";
+  else if(pct>=80) line="Excellent work.";
+  else if(pct>=60) line="Solid — a good grasp of the essentials.";
+  else if(pct>=40) line="Not bad — worth a quick refresher.";
+  else line="A good chance to brush up.";
+  stage.innerHTML=`
+    <div class="result">
+      <div class="sub">You scored</div>
+      <div class="score-ring">${score} / ${total}</div>
+      <div class="sub">${pct}%</div>
+      <div class="verdict-line">${line}</div>
+      <button class="btn" id="againBtn">Play again</button>
+      <button class="btn secondary" id="homeBtn" style="margin-top:12px;">Back to start</button>
+    </div>`;
+  document.getElementById('againBtn').onclick=()=>{idx=0;score=0;renderQ();};
+  document.getElementById('homeBtn').onclick=renderStart;
+}
+
+renderStart();
+</script>
+</body>
+</html>
