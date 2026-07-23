@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regenix Clinical Knowledge Challenge</title>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:linear-gradient(135deg,#0E7C66,#12A382);padding:25px}
+.container{max-width:800px;margin:auto;background:#fff;border-radius:18px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.logo{text-align:center}.logo img{height:80px}
+h1,h2{text-align:center;color:#0E7C66}
+.info{background:#F4FBF8;border-left:5px solid #0E7C66;padding:18px;border-radius:10px;line-height:1.6}
+label{font-weight:bold;display:block;margin-top:15px}
+input{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:15px;margin-top:15px}
+.card{border:2px solid #ccc;border-radius:12px;padding:18px;text-align:center;cursor:pointer;font-weight:bold}
+.card.active{background:#0E7C66;color:#fff;border-color:#0E7C66}
+button{width:100%;padding:16px;background:#0E7C66;color:#fff;border:none;border-radius:10px;font-size:18px;margin-top:20px;cursor:pointer}
+.footer{text-align:center;color:#777;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="logo"><img src="Regenix Logo New.png" alt="Logo"></div>
+<h1>CLINICAL KNOWLEDGE CHALLENGE 2026</h1>
+<h2>Test Your Clinical Expertise</h2>
+
+<div class="info">
+  <b>Welcome, Doctor!</b><br><br>
+
+  Thank you for participating in the
+  <b>Regenix Clinical Knowledge Challenge 2026</b>.<br><br>
+
+  <b>How to Participate</b><br><br>
+
+  📝 Complete your registration.<br>
+  🎯 Select your specialty.<br>
+  ❓ Answer <b>5 clinical questions</b>.<br>
+  ⏱️ Complete the quiz in <b>~3 minutes</b>.<br>
+  🎁 <b>Lucky winners will receive exciting gifts!</b><br><br>
+
+  <b>Best of luck!</b>
+</div>
+
+<h2>Participant Information</h2>
+
+<label>Doctor Name *</label>
+<input id="name">
+
+<label>Mobile Number *</label>
+<input id="mobile">
+
+<label>Email ID *</label>
+<input id="email" type="email">
+
+<label>Hospital / Clinic *</label>
+<input id="hospital">
+
+<label>City / Practice Location *</label>
+<input id="city">
+
+<h2>Select Your Specialty</h2>
+
+<div class="cards">
+<div class="card" onclick="pick(this,'quiz_diabetology_1.html')">🟢<br>Diabetology</div>
+<div class="card" onclick="pick(this,'quiz_cardiology.html')">❤️<br>Cardiology</div>
+<div class="card" onclick="pick(this,'quiz_physicians.html')">🩺<br>Physicians</div>
+<div class="card" onclick="pick(this,'quiz_oha.html')">💊<br>OHA</div>
+<div class="card" onclick="pick(this,'quiz_glp.html')">🧬<br>GLP‑1 RA</div>
+</div>
+
+<p><label><input id="agree" type="checkbox" style="width:auto"> I confirm that the above information is accurate.</label></p>
+
+<button onclick="startQuiz()">START CLINICAL CHALLENGE →</button>
+
+<div class="footer">Powered by Regenix Drugs Ltd.</div>
+</div>
+
+<script>
+let quiz="";
+function pick(el,file){
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("active"));
+el.classList.add("active");
+quiz=file;
+}
+function req(id,msg){
+if(!document.getElementById(id).value.trim()){alert(msg);return false;}
+return true;
+}
+function startQuiz(){
+if(!req("name","Enter Doctor Name")) return;
+if(!req("mobile","Enter Mobile Number")) return;
+if(!req("email","Enter Email ID")) return;
+if(!req("hospital","Enter Hospital / Clinic")) return;
+if(!req("city","Enter City / Practice Location")) return;
+if(!quiz){alert("Select Your Specialty");return;}
+if(!document.getElementById("agree").checked){alert("Please confirm the declaration.");return;}
+localStorage.setItem("doctorName", document.getElementById("name").value);
+localStorage.setItem("doctorMobile", document.getElementById("mobile").value);
+localStorage.setItem("doctorEmail", document.getElementById("email").value);
+localStorage.setItem("doctorHospital", document.getElementById("hospital").value);
+localStorage.setItem("doctorCity", document.getElementById("city").value);
+location.href = quiz;
+}
+</script>
+</body>
+</html>
