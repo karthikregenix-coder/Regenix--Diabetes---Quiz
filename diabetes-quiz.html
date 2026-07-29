@@ -118,7 +118,7 @@ header{
 const QUIZ = {
  intro: "Test your hypertension management knowledge across 5 evidence-based clinical questions. Tap an answer to see the correct response and a short rationale.",
   chips: ["5 questions", "Mixed difficulty", "With rationale"],
-  questions: [
+questions: [
 {
 q:"A 46-year-old man has an office blood pressure of 148/92 mmHg during a routine health check. What is the most appropriate next step to confirm the diagnosis of hypertension?",
 options:[
@@ -129,7 +129,7 @@ options:[
 ],
 answer:2,
 why:"A diagnosis of hypertension should not be based on a single office BP reading. ABPM is the reference standard, while HBPM is an acceptable alternative. These methods help identify white-coat and masked hypertension, reducing misdiagnosis.",
-ref:"2023 European Society of Hypertension (ESH) Guideline | 2017 ACC/AHA Guideline"
+ref:"2023 European Society of Hypertension (ESH) Guideline | 2017 ACC/AHA Hypertension Guideline"
 },
 
 {
@@ -146,17 +146,17 @@ ref:"KDIGO 2024 CKD Guideline | ADA Standards of Care 2025 | 2023 ESH Guideline"
 },
 
 {
-q:"Which antihypertensive drug has the strongest evidence as the preferred fourth-line therapy for resistant hypertension in patients with preserved renal function and normal serum potassium?",
+q:"A patient remains hypertensive (164/98 mmHg) despite optimal doses of an ACE inhibitor, a calcium channel blocker, and a thiazide-like diuretic. Adherence has been confirmed. What is the preferred fourth-line agent?",
 options:[
-"Doxazosin",
-"Bisoprolol",
+"Clonidine",
+"Hydralazine",
 "Spironolactone",
-"Hydralazine"
+"Doxazosin"
 ],
 answer:2,
-why:"The PATHWAY-2 trial showed spironolactone was superior to bisoprolol and doxazosin in lowering blood pressure in resistant hypertension, making it the recommended fourth-line therapy.",
+why:"This patient has resistant hypertension. The PATHWAY-2 trial demonstrated that spironolactone is the most effective fourth-line therapy for resistant hypertension, provided renal function and potassium levels are acceptable.",
 ref:"PATHWAY-2 Trial (Lancet 2015) | 2023 European Society of Hypertension Guideline"
-}
+},
 
 {
 q:"A 68-year-old man presents with BP 228/130 mmHg, confusion, papilledema, and acute kidney injury. What is the recommended initial BP management?",
@@ -168,23 +168,10 @@ options:[
 ],
 answer:1,
 why:"This is a hypertensive emergency with acute target-organ damage. BP should be lowered gradually, generally by 20–25% of the mean arterial pressure during the first hour to avoid compromising cerebral, coronary and renal perfusion.",
-ref:"2023 ESH Guideline | AHA Scientific Statement on Hypertensive Crisis"
+ref:"2023 European Society of Hypertension (ESH) Guideline | AHA Scientific Statement on Hypertensive Crisis"
 },
 
 {
-q:"Which antihypertensive drug has the strongest evidence as the preferred fourth-line therapy for resistant hypertension in patients with preserved renal function and normal serum potassium?",
-options:[
-"Doxazosin",
-"Bisoprolol",
-"Spironolactone",
-"Hydralazine"
-],
-answer:2,
-why:"The PATHWAY-2 trial showed spironolactone was superior to bisoprolol and doxazosin in lowering blood pressure in resistant hypertension, making it the recommended fourth-line therapy.",
-ref:"PATHWAY-2 Trial (Lancet 2015) | 2023 European Society of Hypertension Guideline"
-}
-
-  {
 q:"A 58-year-old man has a clinic blood pressure of 146/92 mmHg, but his 24-hour ambulatory blood pressure average is 128/78 mmHg. What is the most likely diagnosis?",
 options:[
 "Sustained hypertension",
@@ -193,7 +180,7 @@ options:[
 "Resistant hypertension"
 ],
 answer:1,
-why:"White-coat hypertension is characterised by elevated office blood pressure with normal out-of-office blood pressure (ABPM or HBPM). Confirming this diagnosis helps avoid unnecessary lifelong antihypertensive treatment while ensuring continued follow-up, as these patients remain at increased cardiovascular risk compared with normotensive individuals.",
+why:"White-coat hypertension is characterised by elevated office blood pressure with normal out-of-office blood pressure (ABPM or HBPM). Confirming this diagnosis helps avoid unnecessary lifelong antihypertensive treatment while ensuring continued follow-up, as these patients remain at increased cardiovascular risk than normotensive individuals.",
 ref:"2023 European Society of Hypertension (ESH) Guideline | 2017 ACC/AHA Hypertension Guideline"
 }
 ]
