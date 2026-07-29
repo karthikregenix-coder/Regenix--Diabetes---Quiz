@@ -198,14 +198,10 @@ function setBar(p){bar.style.width=p+'%';}
 function renderStart(){
     setBar(0);
 
-   stage.innerHTML = `
+    stage.innerHTML = `
 <div class="start">
 
-  <h2 style="margin:0 0 16px;font-size:30px;font-weight:800;color:var(--brand-dark);text-align:center;">
-    CLINICAL KNOWLEDGE CHALLENGE 2026
-  </h2>
-
-  <p style="text-align:center;font-size:17px;line-height:1.7;color:var(--muted);">
+  <p style="text-align:center;font-size:17px;line-height:1.7;color:var(--muted);margin-top:10px;">
     Welcome to the <strong>Clinical Knowledge Challenge 2026</strong>.<br><br>
 
     Test your clinical decision-making through <strong>five evidence-based hypertension case scenarios</strong> developed from internationally recognised guidelines.<br><br>
@@ -225,7 +221,7 @@ function renderStart(){
         idx = 0;
         score = 0;
         renderQ();
-   };
+    };
 }
 
 function renderQ(){
