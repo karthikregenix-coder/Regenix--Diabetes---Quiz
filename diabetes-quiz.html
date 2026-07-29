@@ -108,45 +108,75 @@ header{
 
 <script>
 const QUIZ = {
-  intro: "Test your diabetes management knowledge across 5 quick questions — from the basics to the trickier calls. Tap an answer to see the correct response and a short rationale.",
+ intro: "Test your hypertension management knowledge across 5 evidence-based clinical questions. Tap an answer to see the correct response and a short rationale.",
   chips: ["5 questions", "Mixed difficulty", "With rationale"],
   questions: [
-    {
-      q: "What HbA1c target is recommended for most non-pregnant adults with diabetes?",
-      options: ["Below 6.0%", "Below 7.0%", "Below 8.5%", "Below 9.0%"],
-      answer: 1,
-      why: "A general HbA1c goal of <7% is appropriate for most non-pregnant adults. Targets should be individualised — stricter (e.g. <6.5%) for selected patients, and more relaxed for those with limited life expectancy, severe hypoglycaemia risk, or advanced complications.",
-      ref: "ADA Standards of Care in Diabetes"
-    },
-    {
-      q: "In the absence of contraindications, which agent is preferred first-line pharmacologic therapy for type 2 diabetes?",
-      options: ["Sulfonylurea", "Insulin", "Metformin", "Pioglitazone"],
-      answer: 2,
-      why: "Metformin remains a foundational first-line agent — it is effective, weight-neutral, inexpensive, and has a strong safety record. Agents with proven cardiorenal benefit are added or chosen based on the patient's comorbidities.",
-      ref: "ADA / EASD Consensus"
-    },
-    {
-      q: "A patient with type 2 diabetes and established heart failure needs glucose-lowering therapy with cardiac benefit. Which class is preferred?",
-      options: ["DPP-4 inhibitors", "SGLT2 inhibitors", "Sulfonylureas", "Alpha-glucosidase inhibitors"],
-      answer: 1,
-      why: "SGLT2 inhibitors reduce heart-failure hospitalisation and slow CKD progression, and are recommended in type 2 diabetes with heart failure, ASCVD, or chronic kidney disease — independent of baseline HbA1c or metformin use.",
-      ref: "ADA Standards of Care / ESC HF guidelines"
-    },
-    {
-      q: "Which fasting plasma glucose value meets the diagnostic threshold for diabetes?",
-      options: ["≥100 mg/dL", "≥110 mg/dL", "≥126 mg/dL", "≥140 mg/dL"],
-      answer: 2,
-      why: "Fasting plasma glucose ≥126 mg/dL (7.0 mmol/L) is diagnostic. Values of 100–125 mg/dL indicate impaired fasting glucose (prediabetes). A diagnosis is confirmed with a repeat abnormal test unless the patient is clearly symptomatic with unequivocal hyperglycaemia.",
-      ref: "ADA Diagnostic Criteria"
-    },
-    {
-      q: "In type 2 diabetes with chronic kidney disease and persistent albuminuria on a maximally tolerated ACE inhibitor/ARB, which agent reduces CKD progression and cardiovascular events?",
-      options: ["Finerenone", "Spironolactone at high dose", "Amlodipine", "Doxazosin"],
-      answer: 0,
-      why: "Finerenone, a non-steroidal selective mineralocorticoid receptor antagonist, lowers albuminuria and reduces CKD progression and cardiovascular events when added to RAAS blockade in type 2 diabetes with CKD. Monitor serum potassium after initiation.",
-      ref: "ADA Standards of Care / FIDELIO-DKD"
-    }
-  ]
+   questions: [
+{
+q:"A 46-year-old man has an office blood pressure of 148/92 mmHg during a routine health check. What is the most appropriate next step to confirm the diagnosis of hypertension?",
+options:[
+"Start antihypertensive therapy immediately",
+"Repeat the BP after 5 minutes and diagnose hypertension if still elevated",
+"Confirm using 24-hour ambulatory BP monitoring (ABPM) or validated home BP monitoring (HBPM)",
+"Measure BP only in the opposite arm"
+],
+answer:2,
+why:"A diagnosis of hypertension should not be based on a single office BP reading. ABPM is the reference standard, while HBPM is an acceptable alternative. These methods help identify white-coat and masked hypertension, reducing misdiagnosis.",
+ref:"2023 European Society of Hypertension (ESH) Guideline | 2017 ACC/AHA Guideline"
+},
+
+{
+q:"A 60-year-old man with type 2 diabetes and albuminuria has a BP of 154/94 mmHg. Which antihypertensive drug class should be preferred?",
+options:[
+"Beta-blocker",
+"ACE inhibitor or ARB",
+"Alpha-blocker",
+"Verapamil"
+],
+answer:1,
+why:"ACE inhibitors and ARBs reduce albuminuria, slow CKD progression, and reduce cardiovascular events. They are the preferred first-line therapy in patients with diabetes and albuminuria unless contraindicated.",
+ref:"KDIGO 2024 CKD Guideline | ADA Standards of Care 2025 | 2023 ESH Guideline"
+},
+
+{
+q:"A patient remains hypertensive (164/98 mmHg) despite optimal doses of an ACE inhibitor, calcium channel blocker, and thiazide-like diuretic. Adherence has been confirmed. What is the preferred fourth-line agent?",
+options:[
+"Clonidine",
+"Hydralazine",
+"Spironolactone",
+"Doxazosin"
+],
+answer:2,
+why:"The PATHWAY-2 trial demonstrated that spironolactone is the most effective fourth-line therapy for resistant hypertension, provided renal function and potassium levels are acceptable.",
+ref:"PATHWAY-2 Trial (Lancet) | 2023 ESH Guideline"
+},
+
+{
+q:"A 68-year-old man presents with BP 228/130 mmHg, confusion, papilledema, and acute kidney injury. What is the recommended initial BP management?",
+options:[
+"Lower BP to below 140/90 mmHg within 1 hour",
+"Lower mean arterial pressure by 20–25% during the first hour using intravenous antihypertensive therapy",
+"Administer sublingual nifedipine immediately",
+"Observe for 24 hours before initiating treatment"
+],
+answer:1,
+why:"This is a hypertensive emergency with acute target-organ damage. BP should be lowered gradually, generally by 20–25% of the mean arterial pressure during the first hour to avoid compromising cerebral, coronary and renal perfusion.",
+ref:"2023 ESH Guideline | AHA Scientific Statement on Hypertensive Crisis"
+},
+
+{
+q:"Which antihypertensive drug has the strongest evidence as the preferred fourth-line therapy for resistant hypertension in patients with preserved renal function and normal serum potassium?",
+options:[
+"Doxazosin",
+"Bisoprolol",
+"Spironolactone",
+"Hydralazine"
+],
+answer:2,
+why:"The PATHWAY-2 trial showed spironolactone was superior to bisoprolol and doxazosin in lowering blood pressure in resistant hypertension, making it the recommended fourth-line therapy.",
+ref:"PATHWAY-2 Trial (Lancet 2015) | 2023 European Society of Hypertension Guideline"
+}
+]
 };
 </script>
 
