@@ -193,34 +193,38 @@ const bar=document.getElementById('bar');
 let idx=0, score=0, answered=false;
 
 function setBar(p){bar.style.width=p+'%';}
-
 function renderStart(){
-  setBar(0);
-  const chips=QUIZ.chips.map(c=>`<span class="chip">${c}</span>`).join('');
- stage.innerHTML=`
-  <div class="start">
+    setBar(0);
 
-    <h2 style="margin:0 0 16px;font-size:30px;font-weight:800;color:var(--brand-dark);text-align:center;">
-      CLINICAL KNOWLEDGE CHALLENGE 2026
-    </h2>
+    stage.innerHTML = `
+    <div class="start">
 
-    <p style="text-align:center;font-size:17px;line-height:1.7;">
-      Welcome to the <strong>Clinical Knowledge Challenge 2026</strong>.<br><br>
+      <h2 style="margin:0 0 16px;font-size:30px;font-weight:800;color:var(--brand-dark);text-align:center;">
+        CLINICAL KNOWLEDGE CHALLENGE 2026
+      </h2>
 
-      Assess your clinical decision-making through five evidence-based hypertension case scenarios developed from internationally recognised guidelines.<br><br>
+      <p style="text-align:center;font-size:17px;line-height:1.7;">
+        Welcome to the <strong>Clinical Knowledge Challenge 2026</strong>.<br><br>
 
-      Each question includes a concise scientific rationale to reinforce evidence-based learning.<br><br>
+        Assess your clinical decision-making through five evidence-based hypertension case scenarios developed from internationally recognised guidelines.<br><br>
 
-      <strong>Complete the challenge to qualify for the Lucky Draw.</strong>
-    </p>
+        Each question includes a concise scientific rationale to reinforce evidence-based learning.<br><br>
 
-    <button class="btn" id="startBtn">
-      🚀 START CLINICAL CHALLENGE
-    </button>
+        <strong>Complete the challenge to qualify for the Lucky Draw.</strong>
+      </p>
 
-  </div>`;
+      <button class="btn" id="startBtn">
+        🚀 START CLINICAL CHALLENGE
+      </button>
 
-function renderQ(){
+    </div>`;
+
+    document.getElementById("startBtn").onclick = () => {
+        idx = 0;
+        score = 0;
+        renderQ();
+    };
+}
   answered=false;
   const item=QUIZ.questions[idx];
   setBar(Math.round((idx)/QUIZ.questions.length*100));
