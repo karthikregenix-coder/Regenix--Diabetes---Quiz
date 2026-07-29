@@ -223,8 +223,10 @@ function renderStart(){
         idx = 0;
         score = 0;
         renderQ();
-    };
+   };
 }
+
+function renderQ(){
   answered=false;
   const item=QUIZ.questions[idx];
   setBar(Math.round((idx)/QUIZ.questions.length*100));
