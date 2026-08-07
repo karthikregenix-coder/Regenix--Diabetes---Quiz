@@ -229,39 +229,38 @@ function renderStart(){
         renderQ();
     };
 }
-
-function renderQ(){
+  function renderQ(){
   answered=false;
   const item=QUIZ.questions[idx];
   setBar(Math.round((idx)/QUIZ.questions.length*100));
+
   const opts=item.options.map((o,i)=>`
     <button class="opt" data-i="${i}">
-      <span class="let">${String.fromCharCode(65+i)}</span><span>${o}</span>
+      <span class="let">${String.fromCharCode(65+i)}</span>
+      <span>${o}</span>
     </button>`).join('');
- stage.innerHTML=`
-<div class="result">
 
-  <div class="sub">You scored</div>
-  <div class="score-ring">${score} / ${total}</div>
-  <div class="sub">${pct}%</div>
-  <div class="verdict-line">${line}</div>
+  stage.innerHTML=`
+    <div class="qwrap">
+      <div class="qcount">Question ${idx+1} of ${QUIZ.questions.length} · Score ${score}</div>
 
-  <h2 style="color:#0e7c66;margin-top:25px;">🎉 Thank You!</h2>
+      <p class="qtext">${item.q}</p>
 
-  <p style="font-size:17px;line-height:1.8;color:#555;">
-    Your participation has been successfully recorded.<br><br>
+      <div class="options">${opts}</div>
 
-    <strong>You have been entered into the Lucky Draw.</strong><br>
+      <div class="explain" id="explain"></div>
 
-    Winners will be announced at the end of the conference.
-    <br><br>
+      <div class="foot hide" id="foot">
+        <button class="btn" id="nextBtn">
+          ${idx===QUIZ.questions.length-1 ? 'See my result' : 'Next question'}
+        </button>
+      </div>
+    </div>`;
 
-    🍀 <strong>Best of Luck!</strong>
-  </p>
-
-</div>`;
-
-function choose(i){
+  stage.querySelectorAll('.opt').forEach(b =>
+    b.onclick = () => choose(parseInt(b.dataset.i))
+  );
+}
   if(answered)return; answered=true;
   const item=QUIZ.questions[idx];
   const opts=stage.querySelectorAll('.opt');
